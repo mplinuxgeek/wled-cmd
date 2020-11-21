@@ -73,7 +73,6 @@ cycle() {
       echo -n "Setting WLED effect $i, status: "
       return=$(curl -s -o /dev/null -w "%{http_code}" "http://$ip/win&T=1&FX=$i")
       http_code $return
-      echo
       sleep $1
     done
   done
