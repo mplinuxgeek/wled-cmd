@@ -84,7 +84,7 @@ cycle() {
   echo "This function runs in the background till WLED is turned off or brightness is set to zero"
   brightness=128
   #return=$(curl -s -o /dev/null -w "%{http_code}\n" "http://$ip/win&A=$brightness")
-  while [ $brightness -gt 0 ]
+  while [ $brightness -lt 5 ]
   do
     for i in $(echo $2 | sed "s/,/ /g")
     do
