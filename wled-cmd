@@ -1,6 +1,10 @@
 #!/bin/bash
 usage() {
-  echo "Usage: $0 ipaddress {on|off|get_brightness|set_brightness|cycle|fx fx_num|status}"
+  echo "Usage: $0 ipaddress {on|off|color|get_brightness|set_brightness|cycle|fx fx_num|status}"
+}
+
+color_help() {
+  echo -e "Usage: \t$0 ipaddress color [0-255] [0-255] [0-255]\n\t$0 ipaddress color [hex]"
 }
 
 if [[ $1 =~ ^(([1-9]?[0-9]|1[0-9][0-9]|2([0-4][0-9]|5[0-5]))\.){3}([1-9]?[0-9]|1[0-9][0-9]|2([0-4][0-9]|5[0-5]))$ ]]; then
@@ -57,14 +61,22 @@ set_brightness() {
 }
 
 color() {
-  CL=$1
-  if [[ ! "$CL" ]];
+  if [[ $# -eq 1 ]];
   then
+	hex="h$1"
+    echo "Setting color to 0x$1"
+	return=$(curl -s -o /dev/null -w "%{http_code}\n" "http://$ip/win&CL=$hex")
+  elif [[ $# -eq 3 ]];
+  then
+    R=$1
+    G=$2
+    B=$3
+    echo "Setting color to Red=$R Green=$G Blue=$B"
+    return=$(curl -s -o /dev/null -w "%{http_code}\n" "http://$ip/win&R=$R&G=$G&B=$B")
+  else
     color_help
     exit 1
   fi
-  echo "Setting color to $CL"
-  return=$(curl -s -o /dev/null -w "%{http_code}\n" "http://$ip/win&CL=$CL")
   http_code $return
 }
 
@@ -151,6 +163,9 @@ case "$2" in
        ;;
     status)
        status
+       ;;
+    color)
+       color $3 $4 $5
        ;;
     *)
        echo "Missing command"

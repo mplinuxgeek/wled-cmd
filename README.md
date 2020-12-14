@@ -11,6 +11,8 @@ xmllint
 # usage
 ```
 ./wled-cmd 192.168.1.147 on
+./wled-cmd 192.168.1.147 color 255 0 0
+./wled-cmd 192.168.1.147 color ff0000
 ./wled-cmd 192.168.1.147 brightness 128
 ./wled-cmd 192.168.1.147 cycle (this one cycles through a list of effects in the script)
 ./wled-cmd 192.168.1.147 fx 68
